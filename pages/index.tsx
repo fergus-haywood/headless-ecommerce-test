@@ -7,7 +7,7 @@ import { gql, GraphQLClient } from 'graphql-request'
 
 const homepageQuery = groq`*[_type == "homepage"]{
   heroTitle
-}[0]`;
+}[0]`; 
 
 function HomePage({ data }) {
   const { homepageData } = data;
@@ -51,58 +51,13 @@ export default HomePage;
 
 export async function getStaticProps() {
   const homepageData = await getClient().fetch(homepageQuery, {});
-  const graphQLClient = new GraphQLClient( 'https://fergus-headless.testing.myshopify.com', {
-    headers: {
-      "X-Shopify-Storefront-Access-Token": process.env.NEXT_PUBLIC_TOKEN,
-    },
-  });
-
-
-  // Shopify Request
-  const query = gql`
-    {
-      collectionByHandle(handle: "homepage") {
-        id
-        title
-        products(first: 12) {
-          edges {
-            node {
-              id
-              title
-              variants(first: 1) {
-                edges {
-                  node {
-                    id
-                  }
-                }
-              }
-              images(first: 1) {
-                edges {
-                  node {
-                    altText
-                    transformedSrc
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  `;
-
-  const res = await graphQLClient.request(query);
-  if (res.errors) { 
-    console.error(JSON.stringify(res.errors, null, 2));
-    throw Error('Unable to retrieve Shopify Products. Please checks logs')
-  }
-
+  
   return {
     props: {
       data: {
         homepageData,
-        collection: res.collectionByHandle,
       },
+      revalidate: 10,
     },
   };
 }
