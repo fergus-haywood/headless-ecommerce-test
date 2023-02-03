@@ -4,4 +4,13 @@ const nextConfig = {
   swcMinify: true,
 }
 
-module.exports = nextConfig
+const imagesConfig = {
+  images: {
+    domains: ['images.pexels.com', 'cdn.shopify.com'],
+  },
+}
+
+module.exports = {
+  ...nextConfig,
+  ...imagesConfig,
+}
