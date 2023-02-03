@@ -10,9 +10,17 @@ export default defineConfig({
   projectId: 'nqddzz19',
   dataset: 'production',
 
-  plugins: [deskTool(), visionTool()],
+  plugins: [deskTool(
+  //   {
+  //   structure: S => S.documentTypeListItems(),
+  //   name: 'desk',
+  //   title: 'Desk'
+  // }
+  )
+, visionTool()],
 
   schema: {
     types: schemaTypes,
   },
 })
+
