@@ -13,11 +13,12 @@ const homepageQuery = groq`*[_type == "homepage"]{
 
 
 
-function HomePage({ data }) {
-  const { homepageData } = data;
-  const { collection } = data
+function HomePage(props:any) {
+  const { homepageData } = props.data;
+  const { collection } = props.data
 
-  console.log(collection.products.edges)
+  
+  const products = collection.products.edges
 
   return (
     <main className="bg-gray-50">
@@ -31,16 +32,18 @@ function HomePage({ data }) {
         <h2 className="font-semibold text-4xl mb-8">Featured Products</h2>
 
         <div className="grid grid-flow-row grid-cols-3 grid-rows-auto gap-8">
+
+
           <article className="text-center bg-white rounded-xl p-8 shadow-md pt-6 md:p-8 space-y-8">
             <Image
-              src="https://images.pexels.com/photos/218763/pexels-photo-218763.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
+              src={products[0].node.images.edges[0].node.transformedSrc}
               width="150"
               height="150"
               alt="A pair of slippers"
               className="rounded-full"
             />
 
-            <p className="text-lg font-semibold">A Pair of Slippers</p>
+            <p className="text-lg font-semibold">{products[0].node.title}</p>
 
             <div className="font-medium">
               <Link href="/" className="bg-gray-100 text-gray-800 px-6 py-2 rounded block">
@@ -48,6 +51,7 @@ function HomePage({ data }) {
               </Link>
             </div>
           </article>
+
         </div>
       </section>
     </main>
@@ -58,11 +62,7 @@ export default HomePage;
 
 export async function getStaticProps() {
   const homepageData = await getClient().fetch(homepageQuery, {});
-  // const graphQLClient = new GraphQLClient(process.env.NEXT_PUBLIC_SHOPIFY_URL! , {
-  //   headers: {
-  //     "X-Shopify-Storefront-Access-Token": process.env.NEXT_PUBLIC_TOKEN,
-  //   },
-  // });
+
     // Shopify Request
     const query = gql`
     {
