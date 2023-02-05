@@ -13,12 +13,14 @@ const homepageQuery = groq`*[_type == "homepage"]{
 
 
 
+
 function HomePage(props:any) {
   const { homepageData } = props.data;
   const { collection } = props.data
 
   
   const products = collection.products.edges
+
 
   return (
     <main className="bg-gray-50">
@@ -33,17 +35,18 @@ function HomePage(props:any) {
 
         <div className="grid grid-flow-row grid-cols-3 grid-rows-auto gap-8">
 
+{products.map((product: any) => ( 
 
-          <article className="text-center bg-white rounded-xl p-8 shadow-md pt-6 md:p-8 space-y-8">
+          <article key={product.node.title} className="text-center bg-white rounded-xl p-8 shadow-md pt-6 md:p-8 space-y-8">
             <Image
-              src={products[0].node.images.edges[0].node.transformedSrc}
+              src={product.node.images.edges[0].node.transformedSrc}
               width="150"
               height="150"
               alt="A pair of slippers"
               className="rounded-full"
             />
 
-            <p className="text-lg font-semibold">{products[0].node.title}</p>
+            <p className="text-lg font-semibold">{product.node.title}</p>
 
             <div className="font-medium">
               <Link href="/" className="bg-gray-100 text-gray-800 px-6 py-2 rounded block">
@@ -51,6 +54,7 @@ function HomePage(props:any) {
               </Link>
             </div>
           </article>
+))}
 
         </div>
       </section>
