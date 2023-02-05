@@ -3,14 +3,21 @@ import Image from "next/image";
 import Link from "next/link";
 import { groq } from "next-sanity";
 import { getClient } from "../lib/sanity";
-import { gql, GraphQLClient } from 'graphql-request'
+import { gql, GraphQLClient, request} from 'graphql-request'
+import test from "node:test";
 
 const homepageQuery = groq`*[_type == "homepage"]{
   heroTitle
 }[0]`; 
 
+
+
+
 function HomePage({ data }) {
   const { homepageData } = data;
+  const { collection } = data
+
+  console.log(collection.products.edges)
 
   return (
     <main className="bg-gray-50">
@@ -51,11 +58,75 @@ export default HomePage;
 
 export async function getStaticProps() {
   const homepageData = await getClient().fetch(homepageQuery, {});
+  // const graphQLClient = new GraphQLClient(process.env.NEXT_PUBLIC_SHOPIFY_URL! , {
+  //   headers: {
+  //     "X-Shopify-Storefront-Access-Token": process.env.NEXT_PUBLIC_TOKEN,
+  //   },
+  // });
+    // Shopify Request
+    const query = gql`
+    {
+      collectionByHandle(handle: "homepage") {
+        id
+        title
+        products(first: 12) {
+          edges {
+            node {
+              id
+              title
+              variants(first: 1) {
+                edges {
+                  node {
+                    id
+                  }
+                }
+              }
+              images(first: 1) {
+                edges {
+                  node {
+                    altText
+                    transformedSrc
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }`;
+
+    const endpoint = `${process.env.NEXT_PUBLIC_SHOPIFY_URL}/api/2023-01/graphql.json`
+    const headers = {
+          "X-Shopify-Storefront-Access-Token": process.env.NEXT_PUBLIC_TOKEN,
+        }
+        const variables = { 
+          data: {
+           products: {
+            edges: [
+              {
+                node: {
+                  handle: "testing-1"
+                }}]
+              }
+            }
+          }
+
+const res = await request(endpoint, query, variables , headers)
+
+  // const res = await graphQLClient.request(query);
+
+  if (res.errors) {
+    console.log(JSON.stringify(res.errors, null, 2));
+    throw Error("Unable to retrieve Shopify Products. Please check logs");
+  }
+
+
   
   return {
     props: {
       data: {
         homepageData,
+        collection: res.collectionByHandle,
       },
       revalidate: 10,
     },
