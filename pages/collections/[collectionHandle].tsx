@@ -1,5 +1,6 @@
 import { getAllCollections, getCollectionByHandle } from "../../data/collections"
 import Image from "next/image"
+import styles from '../../styles/pages/Collection.module.css'
 
 import ProductCard from "../../components/ProductCard"
 
@@ -14,9 +15,11 @@ const collectionProducts = collection.products.edges
     <>
     <h1>Collection Title</h1>
     <h1>{collection.title}</h1>
+    <div className={styles.container}>
     {collectionProducts.map((product: any) => ( 
       <ProductCard key={ product.title} product={ product} />
-    ))}
+      ))}
+      </div> 
     </>
   )
 }

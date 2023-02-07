@@ -2,12 +2,11 @@
   border: 1px solid black;
   position: relative;
   height: 300px;
-  width: 250px;
 }
 
 .imageContainer{ 
-  height: 300px;
-width: 250px
+  position: relative;
+  height: 260px;
 
 }
 
@@ -31,5 +30,14 @@ z-index: 2;
 
 .productImage:first-child:hover + .productImage:last-child { 
   opacity: 1;
+}
+
+.information { 
+  position: relative;
+  border-top: 1px solid black;
+}
+
+.productTitle { 
+  position: relative;
 }
 

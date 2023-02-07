@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import styles from '../styles/ProductCard.module.css'
+import styles from '../styles/components/ProductCard.module.css'
 import {useState, useEffect} from 'react'
 
 
@@ -16,9 +16,12 @@ export default function ProductCard(props:any) {
         <Image className={styles.productImage} src={product.node.images.edges[1].node.url} alt={product.node.images.edges[1].node.altText} width={200} height={300} />
       </div>
 
+      <div className={styles.information} >
+      <h4 className={styles.productTitle}>{product.node.title}</h4>
+      </div>
 
 
-    <h4>{product.node.title}</h4>
+
 
     </div>
   )
