@@ -3,8 +3,6 @@ import { getClient } from "../lib/sanity";
 import { gql, request, GraphQLClient} from 'graphql-request'
 import {endpoint, headers } from '../lib/shopify'
 
-
-
 export async function getAllProducts() { 
   const variables = {}
 
@@ -99,8 +97,5 @@ export async function getProductByHandle(productHandle:string) {
   `
 
 const res = await request(endpoint, query, variables, headers)
-
 return res.product
-
-
 }

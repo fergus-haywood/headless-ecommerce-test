@@ -1,16 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import { groq } from "next-sanity";
-import { getClient } from "../../lib/sanity";
-import { gql, request} from 'graphql-request'
-import { useRouter } from 'next/router'
 import { getAllProducts, getProductByHandle } from "../../data/product";
 
 
-export default function ProductPage ({ data }) { 
-  const { product }  = data
-   
-  console.log(product.media.edges[0])
+export default function ProductPage (props:any) { 
+  const { product }  = props.data
 
 
 return ( 
