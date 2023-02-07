@@ -1,0 +1,35 @@
+.container { 
+  border: 1px solid black;
+  position: relative;
+  height: 300px;
+  width: 250px;
+}
+
+.imageContainer{ 
+  height: 300px;
+width: 250px
+
+}
+
+.productImage { 
+  position: absolute;
+  top: 0;
+}
+
+.productImage:first-child { 
+z-index: 2;
+}
+
+.productImage:last-child { 
+  opacity: 0;
+  z-index: 1;
+}
+
+.productImage:first-child:hover { 
+  opacity: 0;
+}
+
+.productImage:first-child:hover + .productImage:last-child { 
+  opacity: 1;
+}
+

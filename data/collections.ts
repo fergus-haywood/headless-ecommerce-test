@@ -40,7 +40,7 @@ export async function getCollectionByHandle(collectionHandle:string) {
 					vendor
 					availableForSale
           totalInventory
-					images(first: 1) {
+					images(first: 2) {
 						edges {
 							node {
 								id
