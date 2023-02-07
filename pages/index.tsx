@@ -3,8 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { groq } from "next-sanity";
 import { getClient } from "../lib/sanity";
-import { gql, GraphQLClient, request} from 'graphql-request'
-import test from "node:test";
+import { gql, request} from 'graphql-request'
 
 const homepageQuery = groq`*[_type == "homepage"]{
   heroTitle
@@ -14,9 +13,8 @@ const homepageQuery = groq`*[_type == "homepage"]{
 
 
 
-function HomePage(props:any) {
-  const { homepageData } = props.data;
-  const { collection } = props.data
+export default function HomePage({ data }) {
+  const { homepageData, collection } = data;
 
   
   const products = collection.products.edges
@@ -49,7 +47,7 @@ function HomePage(props:any) {
             <p className="text-lg font-semibold">{product.node.title}</p>
 
             <div className="font-medium">
-              <Link href="/" className="bg-gray-100 text-gray-800 px-6 py-2 rounded block">
+              <Link href={`/product/${product.node.handle}`} className="bg-gray-100 text-gray-800 px-6 py-2 rounded block">
                   View Product
               </Link>
             </div>
@@ -62,7 +60,6 @@ function HomePage(props:any) {
   );
 }
 
-export default HomePage;
 
 export async function getStaticProps() {
   const homepageData = await getClient().fetch(homepageQuery, {});
@@ -78,6 +75,7 @@ export async function getStaticProps() {
             node {
               id
               title
+              handle
               variants(first: 1) {
                 edges {
                   node {
@@ -117,8 +115,7 @@ export async function getStaticProps() {
 
 const res = await request(endpoint, query, variables , headers)
 
-  // const res = await graphQLClient.request(query);
-
+  // const res = await graphQLClient.request(query)
   if (res.errors) {
     console.log(JSON.stringify(res.errors, null, 2));
     throw Error("Unable to retrieve Shopify Products. Please check logs");
@@ -136,3 +133,4 @@ const res = await request(endpoint, query, variables , headers)
     },
   };
 }
+
