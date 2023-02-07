@@ -39,6 +39,7 @@ export async function getCollectionByHandle(collectionHandle:string) {
 					title
 					vendor
 					availableForSale
+          totalInventory
 					images(first: 1) {
 						edges {
 							node {
