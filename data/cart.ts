@@ -1,7 +1,10 @@
 import { endpoint, headers } from "../lib/shopify";
 import { gql, request } from 'graphql-request'
-import {  useGetCart } from '../lib/siteContext'
-import { json } from "stream/consumers";
+import { useContext} from 'react'
+import { SiteContext } from "../lib/siteContext";
+
+
+
 
 export async function initCart() { 
   const variables = {}
@@ -16,8 +19,19 @@ export async function initCart() {
   }`;
 
 const res = await request(endpoint, query, variables , headers)
-  window.localStorage.setItem('headless-shop-cart', JSON.stringify(res.cartCreate))
-return res.cartCreate.cart
+  window.localStorage.setItem('headless-shop-cart', JSON.stringify({
+    ...res.cartCreate.cart, 
+    lineItems: []
+  }))
+
+  console.log('cart initialized and set in local storage')
+
+  return { 
+    cart: { 
+      ...res.cartCreate.cart,
+      lineItems: []
+    }
+  }
 }
 
 
@@ -29,10 +43,16 @@ export function getCart() {
 
 
     const jsonCart =  JSON.parse(cart)
-console.log('getCart', jsonCart.cart)
-return jsonCart.cart
+    return jsonCart.cart
 
   }
+}
+
+export function useAddToCart(variant:any, cart:any, quantity = 1) { 
+
+  const { context, setContext } = useContext(SiteContext)
+
+
 }
 
 
@@ -49,6 +69,7 @@ export async function addItemToCart(variantId: string, cartId:string,  quantity 
     mutation AddToCart($cartId: ID!, $variantId: ID!) {
         cartLinesAdd(cartId: $cartId, lines: [{ quantity: 1, merchandiseId: $variantId}]) {
           cart {
+            checkoutUrl
             lines(first: 100) {
               edges {
                 node {

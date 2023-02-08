@@ -9,7 +9,7 @@ const initialContext = {
   theme: 'light'
 }
 
-const SiteContext = createContext({
+export const SiteContext = createContext({
   context: initialContext,
   setContext: () => null,
 })
@@ -21,24 +21,24 @@ JSON.parse(window.localStorage.getItem('headless-shop-cart')) :
 false
 
 
-
 // Context Wrapper //
+// ---------------------------------
 
 export function SiteContextProvider(props:any): ReactElement<{children: React.ReactNode}> {
-
+  
   const { data, children } = props
-
-
+  
+  
   const [context, setContext] = useState({
     ...initialContext
   })
-
+  
+  
   useEffect(() => { 
     //getInitialCart
     getInitialCart(setContext, existingCart)
     
   }, [])
-  
 
   return (
     <SiteContext.Provider value={{ context, setContext }}>
@@ -47,15 +47,6 @@ export function SiteContextProvider(props:any): ReactElement<{children: React.Re
   )
 }
 
-export function useGetCart() { 
-
-  const { 
-    context: { cart },
-    setContext, } 
-    = useContext(SiteContext)
-  }
-
-
 export function useSiteContext() {
   const { context } = useContext(SiteContext)
   return context
@@ -63,28 +54,29 @@ export function useSiteContext() {
 
 async function getInitialCart(setContext: any, existingCart: any) { 
 
+  
+
   if (!existingCart) { 
     const newCart = await initCart()
+
     setContext((prevState:any) => { 
+      if (!existingCart) { 
       return { 
         ...prevState,
-       cart: { 
-        id: newCart.id,
-        lineItems: []
+          ...newCart
        }
       }
     })
   } else { 
-      setContext((prevState:any) => { 
-
-        return { 
-          ...prevState,
-          cart: { 
-            id: existingCart.cart.id,
-            lineItems: existingCart.cart.lineItems? existingCart.cart.lineItems : []
-          }
-        }}
-      )
-  }
-
+    setContext((prevState:any) => { 
+      return { 
+        ...prevState,
+        cart: {
+          ...existingCart
+        }
+        
+       }
+      })
+ }
 }
+
