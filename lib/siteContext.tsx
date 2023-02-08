@@ -47,6 +47,15 @@ export function SiteContextProvider(props:any): ReactElement<{children: React.Re
   )
 }
 
+export function useGetCart() { 
+
+  const { 
+    context: { cart },
+    setContext, } 
+    = useContext(SiteContext)
+  }
+
+
 export function useSiteContext() {
   const { context } = useContext(SiteContext)
   return context
