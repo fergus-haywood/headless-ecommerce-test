@@ -1,6 +1,7 @@
 import react, { createContext, useContext, useState, useEffect, ReactElement } from 'react'
 import { initCart } from '../data/cart'
 import { addToLocalCart } from '../data/cart'
+import { shopifyClient } from './shopify'
 
 const initialContext = {
   cart: {
@@ -17,17 +18,16 @@ export const SiteContext:any | null = createContext({
 })
 
 
-// Getting and Setting Cart to Context
+// Getting and Set1=ting Cart to Context
 
-const existingCart = typeof window !== 'undefined' ? 
-JSON.parse(window.localStorage.getItem('headless-shop-cart')) : 
-false
+  const existingCart = typeof window !== 'undefined' ? 
+  JSON.parse(window.localStorage.getItem('headless-shop-cart') || '{}') :
+  false
+
 
 
 function setCartState(cart:any, setContext:any) { 
-
   if (!cart) return null
-
   setContext((previous:any) => { 
     return { 
       ...previous,
@@ -36,9 +36,6 @@ function setCartState(cart:any, setContext:any) {
       }
     }
   })
-
-
-
 }
 
 // Context Wrapper //
@@ -108,6 +105,8 @@ function useCartItems() {
 
 
 export async function getCart(setContext: any, existingCart: any) { 
+
+
 
   if (!existingCart) { 
     const newCart = await initCart()
