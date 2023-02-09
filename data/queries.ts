@@ -36,8 +36,5 @@ export async function addToShopifyCart(variantId: string, cartId: string, quanti
       }`
 
 
-      console.log('added to shopify cart')
-
-      
 const res = await request(endpoint, query, variables , headers)
 }

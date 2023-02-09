@@ -63,8 +63,6 @@ cart.lineItems.push({
     ...cart
   }))
 
-  console.log('added to local storage')
-
   addToShopifyCart(variantId, cart.id, quantity)
 
 

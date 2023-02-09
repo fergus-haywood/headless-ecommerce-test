@@ -66,6 +66,7 @@ export function SiteContextProvider(props:any): ReactElement<{children: React.Re
       setInit(true)
     }
     }, [init])
+    console.log('context', context)
     
     
     return (
@@ -143,8 +144,6 @@ async function addToCart(variantId:string, quantity = 1) {
   const newCart = await addToLocalCart(variantId, quantity)
 
   setCartState(newCart, setContext)
-
-  console.log('added to context cart')
 }
 
 return addToCart
