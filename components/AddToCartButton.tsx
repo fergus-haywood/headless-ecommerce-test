@@ -1,19 +1,18 @@
-import { addItemToCart } from "../data/cart"
-import { useContext } from 'react'
-import { SiteContext } from "../lib/siteContext"
+
+import { SiteContext, useAddToCart } from "../lib/siteContext"
 
 
 
-export default function AddToCartButton({ variant, cart}: any) { 
+export default function AddToCartButton({ variant, quantity}: any) { 
 
-
+  const addToCart = useAddToCart()
 
 
 
 
 
   return ( 
-    <button onClick={() => addToCartContext(variant.id, cart.id)} >
+    <button onClick={() => addToCart(variant , quantity)} >
     Add to cart
   </button>
   )

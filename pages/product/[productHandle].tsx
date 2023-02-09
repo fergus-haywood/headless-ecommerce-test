@@ -4,15 +4,14 @@ import { useState, useContext } from 'react'
 import { SiteContext } from "../../lib/siteContext";
 import { getAllProducts, getProductByHandle } from "../../data/product";
 import { addItemToCart, getCart } from "../../data/cart";
+import AddToCartButton from "../../components/AddToCartButton";
 
 
 export default function ProductPage (props:any) { 
 
   const { product }  = props.data
   const cart  = getCart()
-  const variant = product.variants.edges[0].node
-
-  const { context, setContext} = useContext(SiteContext)
+  const variant = product.variants.edges[0].node.id
 
 return ( 
   <>
@@ -21,8 +20,9 @@ return (
   </h1>
   <Image src={product.media.edges[0].node.image.url} alt={product.media.edges[0].node.alt} width={200} height={200} />
   
-{ cart && 
-  <Link href={cart.checkoutUrl} >
+<AddToCartButton variant={variant} quantity={1}/>
+{cart && 
+  <Link href={cart.checkoutUrl}>
     checkout
   </Link>
 }
@@ -48,7 +48,6 @@ const { products } = await getAllProducts()
 export async function getStaticProps(context:any) {
 
 const { productHandle = ''} = context.params
-
 const product = await getProductByHandle(productHandle)
 
 

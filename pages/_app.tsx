@@ -10,7 +10,7 @@ export default function App({ Component, pageProps }: AppProps) {
   
 
   return (
-    <SiteContextProvider data ={{...data?.site}}>
+    <SiteContextProvider data ={{...data}}>
       <Component {...pageProps} />
     </SiteContextProvider>
 
