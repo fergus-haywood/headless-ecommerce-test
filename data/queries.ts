@@ -114,6 +114,7 @@ res = await request(endpoint, query, variables, headers)
 
 
 console.log('shopify cart updated', res)
+
 }
 
 

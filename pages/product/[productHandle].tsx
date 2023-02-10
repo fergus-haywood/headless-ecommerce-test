@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useState, useContext } from 'react'
 import { SiteContext } from "../../lib/siteContext";
 import { getAllProducts, getProductByHandle } from "../../data/product";
-import { addItemToCart, getCart } from "../../data/cart";
+import { getCart } from "../../data/cart";
 import AddToCartButton from "../../components/AddToCartButton";
 
 
@@ -20,12 +20,8 @@ return (
   </h1>
   <Image src={product.media.edges[0].node.image.url} alt={product.media.edges[0].node.alt} width={200} height={200} />
   
-<AddToCartButton variant={variant} quantity={1}/>
-{cart && 
-  <Link href={cart.checkoutUrl}>
-    checkout
-  </Link>
-}
+<AddToCartButton product={product}/>
+
   </>
 )
 }
@@ -49,9 +45,6 @@ export async function getStaticProps(context:any) {
 
 const { productHandle = ''} = context.params
 const product = await getProductByHandle(productHandle)
-
-
-
   
   return {
     props: {

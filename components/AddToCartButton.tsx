@@ -3,7 +3,7 @@ import { SiteContext, useAddToCart } from "../lib/siteContext"
 
 
 
-export default function AddToCartButton({ variant, quantity}: any) { 
+export default function AddToCartButton(product: any) { 
 
   const addToCart = useAddToCart()
 
@@ -12,7 +12,7 @@ export default function AddToCartButton({ variant, quantity}: any) {
 
 
   return ( 
-    <button onClick={() => addToCart(variant , quantity)} >
+    <button onClick={() => addToCart(product)} >
     Add to cart
   </button>
   )

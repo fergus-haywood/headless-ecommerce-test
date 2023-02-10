@@ -1,32 +1,42 @@
 import { useState, useContext } from 'react'
-import { SiteContext, useUpdateCart } from '../lib/siteContext'
-
+import { SiteContext, useUpdateCart} from '../lib/siteContext'
+import CartProductItem from '../components/CartProductItem'
+import Link from 'next/link'
 
 
 
 export default function Cart() { 
 
-
   const { context, setContext } = useContext(SiteContext)
-  const cartItems = context.cart.lineItems
+
+
+  const{ cart } = context
+  const checkoutUrl = context.cart.checkoutUrl
+
+  console.log(checkoutUrl)
+
 
   const updateCart = useUpdateCart()
+
 
   return ( 
     <>
 
     <h1>  cart </h1>
 
-    <button onClick={() => updateCart("gid://shopify/ProductVariant/44287374197011", 69)}>
-      Update Cart
-      </button>
-    <button onClick={() => updateCart("gid://shopify/ProductVariant/44287374197011", 0)}>
-      remove from Cart
-      </button>
+      {cart.lineItems.map((product:any) => (
+
+        <CartProductItem key={product.variantId} product={product} />
+        )
+      )}
+
+        {checkoutUrl && 
+      <Link href={checkoutUrl}>
+        Checkout
+      </Link>
+        }
 
     </>
-
-
   )
 
 

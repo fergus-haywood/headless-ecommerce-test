@@ -2,7 +2,8 @@ import { endpoint, headers } from "../lib/shopify";
 import { gql, request } from 'graphql-request'
 import { useContext} from 'react'
 import { SiteContext } from "../lib/siteContext";
-import { addToShopifyCart, updateShopifyCart } from "./queries";;
+import { addToShopifyCart, updateShopifyCart } from "./queries";import { getProductByHandle } from "./product";
+;
 
 
 
@@ -51,12 +52,17 @@ export function getCart() {
 }
 
 
-export async function addToLocalCart(variantId: string,  quantity:number) {
+export async function addToLocalCart({product}:any,  quantity:number) {
 
-let cart = getCart()
+
+  
+  let cart = getCart()
+const variantId = product.variants.edges[0].node.id
+const productTitle = product.title
+const price = product.variants.edges[0].node.price.amount
+const heroImage = product.media.edges[0].node
 
 const existingProduct =  cart.lineItems.find((product:any) => product.variantId === variantId)
-
 
 if(existingProduct) { 
 
@@ -67,11 +73,14 @@ if(existingProduct) {
     quantity: existingProduct.quantity + quantity
   })
 } else {
+
   
   cart.lineItems.push({
+    productTitle,
     variantId,
+    heroImage,
+    price,
     quantity,
-
 })
 
 }
