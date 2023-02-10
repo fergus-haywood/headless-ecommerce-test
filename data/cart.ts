@@ -55,11 +55,26 @@ export async function addToLocalCart(variantId: string,  quantity:number) {
 
 let cart = getCart()
 
-cart.lineItems.push({
-  variantId,
-  quantity,
+const existingProduct =  cart.lineItems.find((product:any) => product.variantId === variantId)
+
+
+if(existingProduct) { 
+
+  const index = cart.lineItems.indexOf(existingProduct)
+
+  cart.lineItems.splice(index, 1, {
+    ...existingProduct,
+    quantity: existingProduct.quantity + quantity
+  })
+} else {
+  
+  cart.lineItems.push({
+    variantId,
+    quantity,
+
 })
 
+}
 
 window.localStorage.setItem('headless-shop-cart', JSON.stringify({
   ...cart

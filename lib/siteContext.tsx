@@ -26,7 +26,7 @@ const existingCart = typeof window !== 'undefined' ?
 
 
 
-function setCartState(cart:any, setContext:any) { 
+function setCartState(cart:any, setContext:any, context: any) { 
 
   if (!cart) return null
   setContext((previous:any) => { 
@@ -38,8 +38,7 @@ function setCartState(cart:any, setContext:any) {
     }
   })
 
-
-  console.log('context cartState updated', cart)
+  console.log('new context', context)
 }
 
 // Context Wrapper //
@@ -136,7 +135,7 @@ async function addToCart(variantId:string, quantity = 1) {
 
   if (!context.cart) return
   const newCart = await addToLocalCart(variantId, quantity)
-  setCartState(newCart, setContext)
+  setCartState(newCart, setContext, context)
 }
 return addToCart
 }
@@ -148,10 +147,10 @@ export function useUpdateCart() {
   async function updateCart(variantId: string, newQuantity: number) { 
     if (!context.cart) return
     const newCart = await updateLocalCart(variantId, newQuantity) 
-    setCartState(newCart, setContext)
-
-    console.log('new context', context)
+    setCartState(newCart, setContext, context)
   }
+
+  console.log(context)
 
   
   return updateCart
