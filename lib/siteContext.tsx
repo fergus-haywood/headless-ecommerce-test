@@ -27,6 +27,7 @@ const existingCart = typeof window !== 'undefined' ?
 
 
 function setCartState(cart:any, setContext:any) { 
+
   if (!cart) return null
   setContext((previous:any) => { 
     return { 
@@ -36,6 +37,9 @@ function setCartState(cart:any, setContext:any) {
       }
     }
   })
+
+
+  console.log('context cartState updated', cart)
 }
 
 // Context Wrapper //
@@ -146,10 +150,9 @@ export function useUpdateCart() {
     const newCart = await updateLocalCart(variantId, newQuantity) 
     setCartState(newCart, setContext)
 
-    console.log('context cart updated', context)
+    console.log('new context', context)
   }
 
+  
   return updateCart
 }
-
-

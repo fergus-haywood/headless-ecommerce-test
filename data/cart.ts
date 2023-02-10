@@ -80,16 +80,20 @@ export async function updateLocalCart(variantId: string, quantity: number) {
     quantity,
   }
 
+  if (quantity === 0)  {
+    cart.lineItems.splice(index, 1)
+  } else { 
+    cart.lineItems.splice(index, 1, updatedVariant )
+  }
 
-  cart.lineItems.splice(index, 1, updatedVariant )
 
   window.localStorage.setItem('headless-shop-cart', JSON.stringify({
     ...cart
   }))
 
-  console.log('local storage cart updated')
-
+  
   updateShopifyCart(variantId, cart.id, quantity)
-
+  
+  console.log('local storage cart updated', cart)
   return cart
 }

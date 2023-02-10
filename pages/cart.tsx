@@ -20,6 +20,9 @@ export default function Cart() {
     <button onClick={() => updateCart("gid://shopify/ProductVariant/44287374197011", 69)}>
       Update Cart
       </button>
+    <button onClick={() => updateCart("gid://shopify/ProductVariant/44287374197011", 0)}>
+      remove from Cart
+      </button>
 
     </>
 
