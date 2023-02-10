@@ -13,10 +13,7 @@ export default function Cart() {
   const{ cart } = context
   const checkoutUrl = context.cart.checkoutUrl
 
-  console.log(checkoutUrl)
 
-
-  const updateCart = useUpdateCart()
 
 
   return ( 
@@ -29,7 +26,7 @@ export default function Cart() {
         <CartProductItem key={product.variantId} product={product} />
         )
       )}
-
+      <br />
         {checkoutUrl && 
       <Link href={checkoutUrl}>
         Checkout
