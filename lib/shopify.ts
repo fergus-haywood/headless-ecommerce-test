@@ -6,7 +6,9 @@ export const headers = {
 }
 
 //initializing the Shopify Client to use the Shopify Buy SDK
-export const shopifyClient = Client.buildClient({
-  domain: process.env.NEXT_PUBLIC_SHOPIFY_URL,
-  storefrontAccessToken: 'your-storefront-access-token'
-});
+export const shopifyClient = async () => { 
+  return Client.buildClient({
+    domain: process.env.NEXT_PUBLIC_SHOPIFY_URL,
+    storefrontAccessToken: process.env.NEXT_PUBLIC_TOKEN
+})
+}

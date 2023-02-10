@@ -27,6 +27,7 @@
     "@types/shopify-buy": "^2.10.10",
     "@types/styled-components": "^5.1.26",
     "autoprefixer": "^10.4.13",
+    "dotenv": "^16.0.3",
     "postcss": "^8.4.21",
     "tailwindcss": "^3.2.4"
   }

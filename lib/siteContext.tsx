@@ -1,6 +1,6 @@
 import react, { createContext, useContext, useState, useEffect, ReactElement } from 'react'
 import { initCart } from '../data/cart'
-import { addToLocalCart } from '../data/cart'
+import { addToLocalCart, updateLocalCart, } from '../data/cart'
 import { shopifyClient } from './shopify'
 
 const initialContext = {
@@ -20,9 +20,9 @@ export const SiteContext:any | null = createContext({
 
 // Getting and Set1=ting Cart to Context
 
-  const existingCart = typeof window !== 'undefined' ? 
-  JSON.parse(window.localStorage.getItem('headless-shop-cart') || '{}') :
-  false
+const existingCart = typeof window !== 'undefined' ? 
+   JSON.parse(window.localStorage.getItem('headless-shop-cart')) : 
+    false
 
 
 
@@ -57,13 +57,9 @@ export function SiteContextProvider(props:any): ReactElement<{children: React.Re
   
   useEffect(() => { 
     //getInitialCart
-    if (init === false) { 
       getCart(setContext, existingCart)
 
-      setInit(true)
-    }
-    }, [init])
-    console.log('context', context)
+    }, [])
     
     
     return (
@@ -104,10 +100,7 @@ function useCartItems() {
 }
 
 
-export async function getCart(setContext: any, existingCart: any) { 
-
-
-
+export async function getCart(setContext: any, existingCart: any) {   
   if (!existingCart) { 
     const newCart = await initCart()
 
@@ -137,15 +130,26 @@ const { context, setContext } = useContext(SiteContext)
 
 async function addToCart(variantId:string, quantity = 1) { 
 
-
   if (!context.cart) return
-
   const newCart = await addToLocalCart(variantId, quantity)
-
   setCartState(newCart, setContext)
 }
-
 return addToCart
+}
+
+
+export function useUpdateCart() { 
+  const { context, setContext }  = useContext(SiteContext)
+
+  async function updateCart(variantId: string, newQuantity: number) { 
+    if (!context.cart) return
+    const newCart = await updateLocalCart(variantId, newQuantity) 
+    setCartState(newCart, setContext)
+
+    console.log('context cart updated', context)
+  }
+
+  return updateCart
 }
 
 

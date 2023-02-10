@@ -34,7 +34,90 @@ export async function addToShopifyCart(variantId: string, cartId: string, quanti
           }
         }
       }`
-
-
 const res = await request(endpoint, query, variables , headers)
+
+}
+
+export async function updateShopifyCart(variantId: string, cartId: string, quantity: number) { 
+
+  const lineItemId = await getLineItemId(cartId, variantId)
+
+  
+  const variables = { 
+    cartId,
+    lines: { 
+      id: lineItemId,
+      quantity,
+    }
+  }
+
+  const query = gql`
+  mutation updateCartLines($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
+  cartLinesUpdate(cartId: $cartId, lines: $lines) {
+    cart {
+      id
+      lines(first: 10) {
+        edges {
+          node {
+            id
+            quantity
+            merchandise {
+              ... on ProductVariant {
+                id
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+  `
+
+
+const res = request(endpoint, query, variables, headers)
+console.log('shopify cart updated', res)
+
+
+}
+
+
+
+
+
+export async function getLineItemId(cartId: string, variantId: string) { 
+
+
+  const variables = { 
+    cartId
+  }
+
+  const query = gql`
+  query cartQuery($cartId: ID!) {
+  cart(id: $cartId) {
+    id
+    lines(first: 10) {
+      edges {
+        node {
+          id
+          merchandise {
+            ... on ProductVariant {
+              id
+            }
+          }
+        }
+      }
+    }
+  }
+}`
+
+
+const shopifyCart = await request(endpoint, query, variables , headers)
+
+
+const productLineItemId = shopifyCart.cart.lines.edges.find((item:any) => item.node.merchandise.id === variantId).node.id
+
+
+console.log(productLineItemId)
+return productLineItemId
 }
