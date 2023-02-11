@@ -52,33 +52,43 @@ export function getCart() {
 }
 
 
-export async function addToLocalCart({product}:any,  quantity:number) {
+export async function addToLocalCart(product:any, variant:any, quantity:any ) {
+
+  console.log('product',product)
+  console.log('variant', variant)
+  console.log('optionTitle', variant)
 
 
   
-  let cart = getCart()
-const variantId = product.variants.edges[0].node.id
+let cart = getCart()
+const variantId = variant.node.id
 const productTitle = product.title
-const price = product.variants.edges[0].node.price.amount
-const heroImage = product.media.edges[0].node
+const variantTitle = variant.node.title
+const optionTitle = variant.node.selectedOptions[0].name
+const price = variant.node.price.amount
+const heroImage = variant.node.image.url
+const imageAlt = variant.node.image.altText || ' '
 
-const existingProduct =  cart.lineItems.find((product:any) => product.variantId === variantId)
+const existingVariant =  cart.lineItems.find((product:any) => product.variantId === variantId)
 
-if(existingProduct) { 
+if(existingVariant) { 
 
-  const index = cart.lineItems.indexOf(existingProduct)
+  const index = cart.lineItems.indexOf(existingVariant)
 
   cart.lineItems.splice(index, 1, {
-    ...existingProduct,
-    quantity: existingProduct.quantity + quantity
+    ...existingVariant,
+    quantity: existingVariant.quantity + quantity
   })
 } else {
 
   
   cart.lineItems.push({
     productTitle,
+    variantTitle,
+    optionTitle,
     variantId,
     heroImage,
+    imageAlt,
     price,
     quantity,
 })

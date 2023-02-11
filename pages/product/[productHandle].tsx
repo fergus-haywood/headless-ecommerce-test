@@ -1,17 +1,25 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { SiteContext } from "../../lib/siteContext";
 import { getAllProducts, getProductByHandle } from "../../data/product";
 import { getCart } from "../../data/cart";
 import AddToCartButton from "../../components/AddToCartButton";
+import VariantSelector from "../../components/product/VariantSelector";
 
 
 export default function ProductPage (props:any) { 
 
   const { product }  = props.data
   const cart  = getCart()
-  const variant = product.variants.edges[0].node.id
+  const variants = product.variants.edges
+
+  const hasVariants = variants.length > 1
+  const options = product.options
+
+  const [ selectedVariant, setSelectedVariant ] = useState(variants[0])
+
+
 
 return ( 
   <>
@@ -19,10 +27,37 @@ return (
     {product.title} testing
   </h1>
   <Image src={product.media.edges[0].node.image.url} alt={product.media.edges[0].node.alt} width={200} height={200} />
-  
-<AddToCartButton product={product}/>
 
+  { hasVariants && (
+
+    options.map((option:any) => (
+
+      <VariantSelector key={option.name} variants={variants} setVariant={setSelectedVariant} option={option.name} />
+
+    ))
+
+
+
+
+
+  )}
+
+    <AddToCartButton product={product} variant={selectedVariant} />
+
+
+
+
+
+    < br/>
+
+
+
+    <Link href='/cart'>
+      Go to Cart
+      </Link>
   </>
+
+
 )
 }
 

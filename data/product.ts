@@ -47,13 +47,22 @@ export async function getProductByHandle(productHandle:string) {
           }
         }
       }
-      
-      variants(first: 15) {
+      options{
+        name
+      }
+      variants(first: 10) {
         edges {
           cursor
           node {
             id
             title
+            selectedOptions{
+						name	
+            }
+            image {
+							altText
+            	url
+            }
             quantityAvailable
             price {
               amount
@@ -64,7 +73,7 @@ export async function getProductByHandle(productHandle:string) {
       }
     }
   }
-
+  
   fragment mediaFieldsByType on Media {
   ...on ExternalVideo {
     id

@@ -131,9 +131,12 @@ export async function getCart(setContext: any, existingCart: any) {
 export function useAddToCart() { 
 const { context, setContext } = useContext(SiteContext)
 
-async function addToCart(product:any, quantity = 1) { 
+async function addToCart(product:any, variant:any, quantity = 1) { 
   if (!context.cart) return
-  const newCart = await addToLocalCart(product, quantity)
+
+
+
+  const newCart = await addToLocalCart(product, variant, quantity)
   setCartState(newCart, setContext, context)
   console.log(newCart)
 }

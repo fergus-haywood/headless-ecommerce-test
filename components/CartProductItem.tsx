@@ -13,7 +13,9 @@ export default function CartProductItem({ product }:any) {
     <>
     <p>{product.productTitle}</p>
     <p>{product.price}</p>
-    <Image src={product.heroImage.image.url} alt={product.heroImage.alt || 'blank'} width={200} height={300} />
+    <p>{product.optionTitle}:</p>
+    <p>{product.variantTitle}</p>
+    <Image src={product.heroImage} alt={product.imageAlt || 'blank'} width={200} height={300} />
     <br />
     <QuantityToggle product={product} />
     <br />
