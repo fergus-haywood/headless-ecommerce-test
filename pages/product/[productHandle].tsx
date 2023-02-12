@@ -1,9 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useContext, useEffect } from 'react'
-import { SiteContext } from "../../lib/siteContext";
+import { useState, useEffect } from 'react'
 import { getAllProducts, getProductByHandle } from "../../data/product";
-import { getCart } from "../../data/cart";
 import AddToCartButton from "../../components/AddToCartButton";
 import VariantSelector from "../../components/product/VariantSelector"
 import useSWR  from 'swr'
@@ -20,24 +18,16 @@ export default function ProductPage (props:any) {
     id: product.handle} }).then((res) => res.data)
 
   
-    const { data, error } = useSWR('/api/productAvailability', fetcher, {errorRetryCount: 3});
-
-  const cart  = getCart()
+  const { data, error } = useSWR('/api/productAvailability', fetcher, {errorRetryCount: 3});
   const variants = product.variants.edges
-
   const hasVariants = variants.length > 1
   const options = product.options
-
   const [ selectedVariant, setSelectedVariant ] = useState(variants[0])
-
   const [ available, setAvailable ] = useState(true)
 
-
   useEffect(() => { 
-
     if (data) { 
       const checkAvailable = data?.product?.variants?.edges.find((item:any) => item.node.id === selectedVariant.node.id) 
-
       if ( checkAvailable.node.availableForSale) { 
         setAvailable(true)
       } else { 
@@ -47,14 +37,13 @@ export default function ProductPage (props:any) {
   },[data, selectedVariant])
 
 
-
 return ( 
   <>
   <h1> 
     {product.title} testing
   </h1>
 
-  {/* <p>testing the api call {productInventory}</p> */}
+  <p>testing the api call {available}</p>
   <Image src={product.media.edges[0].node.image.url} alt={product.media.edges[0].node.alt} width={200} height={200} />
 
   { hasVariants && (
