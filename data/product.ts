@@ -38,6 +38,7 @@ export async function getProductByHandle(productHandle:string) {
       id
       title
       description
+      handle
       media(first: 10) {
         edges {
           node {
