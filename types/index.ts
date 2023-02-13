@@ -3,8 +3,10 @@ import React from "react"
 import { StringLiteralLike } from "typescript"
 
 export interface Context { 
-  cart: ContextCart,
   theme: string,
+  isAdding: boolean,
+  isCartOpen: boolean,
+  cart: ContextCart,
 
 
 }
@@ -12,8 +14,6 @@ export interface Context {
 export interface ContextCart { 
     id: string | null,
     checkoutUrl: string | null,
-    isAdding: boolean,
-    isCartOpen: boolean,
     lineItems: ContextProduct[]
 
 }

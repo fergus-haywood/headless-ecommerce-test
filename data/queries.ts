@@ -4,7 +4,6 @@ import { endpoint, headers } from "../lib/shopify";
 
 
 export async function addToShopifyCart(variantId: string, cartId: string, quantity = 1) { 
-
   const variables = {
     variantId,
     quantity,
@@ -34,8 +33,10 @@ export async function addToShopifyCart(variantId: string, cartId: string, quanti
           }
         }
       }`
-const res = await request(endpoint, query, variables , headers)
 
+
+const res = await request(endpoint, query, variables , headers).then((res) => { return res })
+return res
 }
 
 export async function updateShopifyCart(variantId: string, cartId: string, quantity: number) { 
@@ -155,6 +156,5 @@ const shopifyCart = await request(endpoint, query, variables , headers)
 const productLineItemId = shopifyCart.cart.lines.edges.find((item:any) => item.node.merchandise.id === variantId).node.id
 
 
-console.log(productLineItemId)
 return productLineItemId
 }

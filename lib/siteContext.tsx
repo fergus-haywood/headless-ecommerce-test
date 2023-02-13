@@ -4,19 +4,19 @@ import { addToLocalCart, updateLocalCart, getLocalCart } from '../data/cart'
 import * as type from '../types/index'
 
 const initialContext:type.Context  = {
+  isCartOpen: false,
+  isAdding: false,
+  theme: 'light',
   cart: {
     id: null,
     checkoutUrl: null,
-    isAdding: false,
-    isCartOpen: false,
     lineItems: []
-  },
-  theme: 'light'
+  }
 }
 
 export const SiteContext:any | null = createContext({
   context: initialContext,
-  setContext: (context:type.Context) => null ,
+  setContext: () => null ,
 })
 
 
@@ -24,19 +24,18 @@ export const SiteContext:any | null = createContext({
 
 const existingCart = getLocalCart()
 
-function setCartState(cart:type.ContextCart, setContext:React.Dispatch<React.SetStateAction<type.Context | null>>, context: type.Context) { 
+function setCartState(cart:type.ContextCart, setContext:React.Dispatch<React.SetStateAction<type.Context>>, context: type.Context) { 
 
   if (!cart) return null
   setContext((previous:any) => { 
     return { 
       ...previous,
+      isAdding: false,
       cart: {
         ...cart
       }
     }
   })
-
-  console.log('new context', context)
 }
 
 // Context Wrapper //
@@ -69,27 +68,27 @@ export function SiteContextProvider(props:any): ReactElement<{children: React.Re
   )
 }
 
-// function useCartCount() {
-//   const {
-//     context: { cart },
-//   } = useContext(SiteContext)
+function useCartCount() {
+  const {
+    context: { cart },
+  } = useContext(SiteContext)
 
-//   let count = 0
+  let count = 0
 
-//   if (cart.lineItems) {
-//     count = cart.lineItems.reduce((total:number, item:any) => item.quantity + total, 0)
-//   }
+  if (cart.lineItems) {
+    count = cart.lineItems.reduce((total:number, item:any) => item.quantity + total, 0)
+  }
 
-//   return count
-// }
+  return count
+}
 
-// function useCartItems() {
-//   const {
-//     context: { cart },
-//   } = useContext(SiteContext)
+function useCartItems() {
+  const {
+    context: { cart },
+  } = useContext(SiteContext)
 
-//   return cart.lineItems
-// }
+  return cart.lineItems
+}
 
 
 export async function getCart(setContext: any, existingCart: type.ContextCart | null) {   
@@ -119,18 +118,26 @@ export async function getCart(setContext: any, existingCart: type.ContextCart | 
 
 
 export function useAddToCart() { 
-  // @ts-ignore
 const { context, setContext } = useContext(SiteContext)
 
+
 async function addToCart(product:type.PageProduct, variant:type.ShopifyVariant, quantity = 1) { 
+  
+  setContext((prevState:type.Context) => { 
+    return  { 
+      ...prevState,
+      isAdding: true
+    }
+  })
 
   if (!context.cart) return
-  const newCart = await addToLocalCart(product, variant, quantity)
 
-  if (newCart) { 
+  const newCart = await addToLocalCart(product, variant, quantity).catch(err => err.message)
+
+
     setCartState(newCart, setContext, context)
-  }
-  console.log(newCart)
+
+
 }
 
 return addToCart
@@ -150,8 +157,5 @@ export function useUpdateCart() {
     }
   }
 
-  console.log(context)
-
-  
   return updateCart
 }

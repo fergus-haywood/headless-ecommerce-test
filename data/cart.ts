@@ -34,13 +34,9 @@ const res = await request(endpoint, query, variables , headers)
 
 export async function addToLocalCart(product:type.PageProduct, variant:type.ShopifyVariant, quantity:number ) {
 
-  console.log('product',product)
-  console.log('variant', variant)
-  console.log('optionTitle', variant)
-
 let cart = getLocalCart()
 if (!cart) { 
-  return
+  return null
 }
 
 const variantId = variant.node.id
@@ -76,12 +72,13 @@ window.localStorage.setItem('headless-shop-cart', JSON.stringify({
   ...cart
 }))
 
-if (cart.id)  { 
-  addToShopifyCart(variantId, cart.id, quantity)
-}
-
-  return cart
-}
+//@ts-ignore
+//  const res = await addToShopifyCart(variantId, cart.id, quantity).then(() => { 
+//     return cart
+//   })
+//@ts-ignore
+ return await addToShopifyCart(variantId, cart.id, quantity).then(() => { return cart } )
+ }
 
 
 export async function updateLocalCart(variantId: string, quantity: number) { 
