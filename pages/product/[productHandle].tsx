@@ -29,7 +29,7 @@ export default function ProductPage (props:any) {
   useEffect(() => { 
     if (data) { 
       const checkAvailable = data?.product?.variants?.edges.find((item:any) => item.node.id === selectedVariant.node.id) 
-      if ( checkAvailable.node.availableForSale) { 
+      if ( checkAvailable?.node.availableForSale) { 
         setAvailable(true)
       } else { 
         setAvailable(false)
