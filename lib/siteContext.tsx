@@ -1,12 +1,14 @@
-import react, { createContext, useContext, useState, useEffect, ReactElement } from 'react'
+import { createContext, useContext, useState, useEffect, ReactElement } from 'react'
 import { initCart } from '../data/cart'
-import { addToLocalCart, updateLocalCart, } from '../data/cart'
-import { shopifyClient } from './shopify'
+import { addToLocalCart, updateLocalCart, getLocalCart } from '../data/cart'
+import * as type from '../types/index'
 
-const initialContext = {
+const initialContext:type.Context  = {
   cart: {
     id: null,
     checkoutUrl: null,
+    isAdding: false,
+    isCartOpen: false,
     lineItems: []
   },
   theme: 'light'
@@ -14,19 +16,15 @@ const initialContext = {
 
 export const SiteContext:any | null = createContext({
   context: initialContext,
-  setContext: (value:any) => null ,
+  setContext: (context:type.Context) => null ,
 })
 
 
-// Getting and Set1=ting Cart to Context
+// Getting and Setting Cart to Context
 
-const existingCart = typeof window !== 'undefined' ? 
-   JSON.parse(window.localStorage.getItem('headless-shop-cart')) : 
-    false
+const existingCart = getLocalCart()
 
-
-
-function setCartState(cart:any, setContext:any, context: any) { 
+function setCartState(cart:type.ContextCart, setContext:React.Dispatch<React.SetStateAction<type.Context | null>>, context: type.Context) { 
 
   if (!cart) return null
   setContext((previous:any) => { 
@@ -51,11 +49,10 @@ export function SiteContextProvider(props:any): ReactElement<{children: React.Re
   
   
   const [ init, setInit ] = useState(false)
-  const [context, setContext] = useState({
+  const [context, setContext] = useState<type.Context>({
     ...initialContext
   })
 
-  
   
   
   useEffect(() => { 
@@ -72,72 +69,67 @@ export function SiteContextProvider(props:any): ReactElement<{children: React.Re
   )
 }
 
+// function useCartCount() {
+//   const {
+//     context: { cart },
+//   } = useContext(SiteContext)
+
+//   let count = 0
+
+//   if (cart.lineItems) {
+//     count = cart.lineItems.reduce((total:number, item:any) => item.quantity + total, 0)
+//   }
+
+//   return count
+// }
+
+// function useCartItems() {
+//   const {
+//     context: { cart },
+//   } = useContext(SiteContext)
+
+//   return cart.lineItems
+// }
 
 
-
-export function useSiteContext() {
-  const { context } = useContext(SiteContext)
-  return context
-}
-
-function useCartCount() {
-  const {
-    context: { cart },
-  } = useContext(SiteContext)
-
-  let count = 0
-
-  if (cart.lineItems) {
-    count = cart.lineItems.reduce((total:number, item:any) => item.quantity + total, 0)
-  }
-
-  return count
-}
-
-function useCartItems() {
-  const {
-    context: { cart },
-  } = useContext(SiteContext)
-
-  return cart.lineItems
-}
-
-
-export async function getCart(setContext: any, existingCart: any) {   
+export async function getCart(setContext: any, existingCart: type.ContextCart | null) {   
   if (!existingCart) { 
     const newCart = await initCart()
-
-    setContext((prevState:any) => { 
+    setContext((prevState:type.Context) => { 
       if (!existingCart) { 
       return { 
         ...prevState,
+        cart: {
           ...newCart
+        }
        }
       }
     })
   } else { 
-    setContext((prevState:any) => { 
+    setContext((prevState:type.Context) => { 
       return { 
         ...prevState,
         cart: {
           ...existingCart
         }
-       }
-      })
- }
+      }
+    })
+  }
 }
 
 
 export function useAddToCart() { 
+  // @ts-ignore
 const { context, setContext } = useContext(SiteContext)
 
-async function addToCart(product:any, variant:any, quantity = 1) { 
+async function addToCart(product:type.PageProduct, variant:type.ShopifyVariant, quantity = 1) { 
+
   if (!context.cart) return
-
-
-
   const newCart = await addToLocalCart(product, variant, quantity)
-  setCartState(newCart, setContext, context)
+
+  if (newCart) { 
+    setCartState(newCart, setContext, context)
+  }
   console.log(newCart)
 }
 
@@ -146,12 +138,16 @@ return addToCart
 
 
 export function useUpdateCart() { 
+  // @ts-ignore
   const { context, setContext }  = useContext(SiteContext)
 
   async function updateCart(variantId: string, newQuantity: number) { 
     if (!context.cart) return
     const newCart = await updateLocalCart(variantId, newQuantity) 
-    setCartState(newCart, setContext, context)
+
+    if (newCart) { 
+      setCartState(newCart, setContext, context)
+    }
   }
 
   console.log(context)

@@ -3,12 +3,10 @@ import { gql, request } from 'graphql-request'
 import { useContext} from 'react'
 import { SiteContext } from "../lib/siteContext";
 import { addToShopifyCart, updateShopifyCart } from "./queries";import { getProductByHandle } from "./product";
-;
+import * as type from '../types/index'
+import { Type } from "typescript";
 
-
-
-
-export async function initCart() { 
+export async function initCart():Promise<type.ContextCart> { 
   const variables = {}
   const query = gql`
     mutation CreateCart {
@@ -28,39 +26,23 @@ const res = await request(endpoint, query, variables , headers)
 
   console.log('cart initialized')
   return { 
-    cart: { 
       ...res.cartCreate.cart,
       lineItems: []
-    }
-  }
-
-
-}
-
-
-export function getCart() { 
-
-  if (typeof window !== "undefined") { 
-    
-    const cart:any = window.localStorage.getItem('headless-shop-cart')
-
-
-    const jsonCart =  JSON.parse(cart)
-    return jsonCart
-
   }
 }
 
 
-export async function addToLocalCart(product:any, variant:any, quantity:any ) {
+export async function addToLocalCart(product:type.PageProduct, variant:type.ShopifyVariant, quantity:number ) {
 
   console.log('product',product)
   console.log('variant', variant)
   console.log('optionTitle', variant)
 
+let cart = getLocalCart()
+if (!cart) { 
+  return
+}
 
-  
-let cart = getCart()
 const variantId = variant.node.id
 const productTitle = product.title
 const variantTitle = variant.node.title
@@ -69,19 +51,16 @@ const price = variant.node.price.amount
 const heroImage = variant.node.image.url
 const imageAlt = variant.node.image.altText || ' '
 
-const existingVariant =  cart.lineItems.find((product:any) => product.variantId === variantId)
+const existingVariant = cart.lineItems.find((product:type.ContextProduct) => product.variantId === variantId)
 
 if(existingVariant) { 
-
-  const index = cart.lineItems.indexOf(existingVariant)
+  const index: number = cart.lineItems.indexOf(existingVariant)
 
   cart.lineItems.splice(index, 1, {
     ...existingVariant,
     quantity: existingVariant.quantity + quantity
   })
 } else {
-
-  
   cart.lineItems.push({
     productTitle,
     variantTitle,
@@ -91,24 +70,28 @@ if(existingVariant) {
     imageAlt,
     price,
     quantity,
-})
-
+  })
 }
-
 window.localStorage.setItem('headless-shop-cart', JSON.stringify({
   ...cart
 }))
-addToShopifyCart(variantId, cart.id, quantity)
+
+if (cart.id)  { 
+  addToShopifyCart(variantId, cart.id, quantity)
+}
 
   return cart
 }
 
 
 export async function updateLocalCart(variantId: string, quantity: number) { 
-  let cart = getCart() 
-  const cartVariant = cart.lineItems.find((product: any) => product.variantId === variantId)
-  const index =  cart.lineItems.indexOf(cartVariant)
+  let cart = getLocalCart() 
+  if (!cart) return
 
+  const cartVariant = cart.lineItems.find((product: any) => product.variantId === variantId)
+  if (!cartVariant) return
+
+  const index =  cart.lineItems.indexOf(cartVariant)
   const updatedVariant = {
     ...cartVariant,
     quantity,
@@ -119,15 +102,28 @@ export async function updateLocalCart(variantId: string, quantity: number) {
   } else { 
     cart.lineItems.splice(index, 1, updatedVariant )
   }
-
-
   window.localStorage.setItem('headless-shop-cart', JSON.stringify({
     ...cart
   }))
-
   
-  updateShopifyCart(variantId, cart.id, quantity)
+  if (cart.id) { 
+    updateShopifyCart(variantId, cart.id, quantity)
+  }
   
   console.log('local storage cart updated', cart)
   return cart
 }
+
+
+export function getLocalCart():type.ContextCart | null { 
+if (typeof window !== 'undefined') { 
+  const localCart = window.localStorage.getItem('headless-shop-cart')
+  if (localCart) { 
+   return JSON.parse(localCart)
+  } else { 
+    return null
+  }
+}
+return null
+}
+

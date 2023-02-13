@@ -6,7 +6,7 @@ import Link from 'next/link'
 
 
 export default function Cart() { 
-
+// @ts-ignore
   const { context, setContext } = useContext(SiteContext)
 
 

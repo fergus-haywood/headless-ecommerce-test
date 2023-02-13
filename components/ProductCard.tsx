@@ -1,15 +1,11 @@
 import Image from 'next/image'
 import styles from '../styles/components/ProductCard.module.css'
-import {useState, useEffect} from 'react'
-import { useSiteContext } from '../lib/siteContext'
 import Link from 'next/link'
 
 
 export default function ProductCard(props:any) { 
 
   const product = props.product
-
-const context = useSiteContext()
 
   return (
     <div className={styles.container}>
