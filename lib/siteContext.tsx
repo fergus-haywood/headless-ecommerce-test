@@ -24,14 +24,14 @@ export const SiteContext:any | null = createContext({
 
 const existingCart = getLocalCart()
 
-function setCartState(cart:type.ContextCart, setContext:React.Dispatch<React.SetStateAction<type.Context>>, context: type.Context) { 
+function setCartState(cart:type.ContextCart, setContext:React.Dispatch<React.SetStateAction<type.Context>>, cartOpen?: boolean) { 
 
   if (!cart) return null
   setContext((previous:any) => { 
     return { 
       ...previous,
       isAdding: false,
-      isCartOpen: true,
+      isCartOpen: cartOpen ? true : previous.isCartOpen,
       cart: {
         ...cart
       }
@@ -136,7 +136,7 @@ async function addToCart(product:type.PageProduct, variant:type.ShopifyVariant, 
 
   if (!context.cart) return
   const newCart = await addToLocalCart(product, variant, quantity).catch(err => err.message)
-    setCartState(newCart, setContext, context)
+    setCartState(newCart, setContext, true)
     setTimeout(() => setContext((prevState:type.Context) => { 
       return { 
         ...prevState,
@@ -160,7 +160,7 @@ export function useUpdateCart() {
     const newCart = await updateLocalCart(variantId, newQuantity) 
 
     if (newCart) { 
-      setCartState(newCart, setContext, context)
+      setCartState(newCart, setContext)
     }
   }
 

@@ -1,6 +1,7 @@
 
 import { useCartCount, useCartItems, useSiteContext } from "../../lib/siteContext";
 import * as type from '../../types/index'
+import CartProductItem from './CartProductItem'
 
 
 export default function CartSlider() { 
@@ -17,16 +18,14 @@ export default function CartSlider() {
     <h1> Cart Slider </h1>
     <p>{count}</p>
 
-    { items.map((item:type.ContextProduct) => { 
+    { items.map((product:type.ContextProduct) => (
 
-<>
-      <p>{item.productTitle}</p>
-      <p>{item.optionTitle}</p>
-
-</>
-
-
-    })}
+      
+      <CartProductItem key={product.variantId} product={product} />
+      
+      
+      )
+    )}
 
 
 </div>

@@ -1,10 +1,12 @@
-import { getProductByHandle } from "../data/product"
+import { getProductByHandle } from "../../data/product"
 import Image from "next/image"
-import { useUpdateCart } from "../lib/siteContext"
-import QuantityToggle from './ cart/QuantityToggle'
+import { useUpdateCart } from "../../lib/siteContext"
+import QuantityToggle from './QuantityToggle'
+import * as type from '../../types/index'
 
 
 export default function CartProductItem({ product }:any) { 
+
   
   const updateCart = useUpdateCart()
 

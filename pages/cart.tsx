@@ -1,6 +1,6 @@
 
 import { useSiteContext, SiteContext, useUpdateCart, useCartCount} from '../lib/siteContext'
-import CartProductItem from '../components/CartProductItem'
+import CartProductItem from '../components/ cart/CartProductItem'
 import Link from 'next/link'
 
 
