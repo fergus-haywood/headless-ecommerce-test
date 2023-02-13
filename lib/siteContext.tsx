@@ -31,6 +31,7 @@ function setCartState(cart:type.ContextCart, setContext:React.Dispatch<React.Set
     return { 
       ...previous,
       isAdding: false,
+      isCartOpen: true,
       cart: {
         ...cart
       }
@@ -68,7 +69,12 @@ export function SiteContextProvider(props:any): ReactElement<{children: React.Re
   )
 }
 
-function useCartCount() {
+export function useSiteContext() { 
+  const { context } = useContext(SiteContext)
+  return context
+}
+
+export function useCartCount() {
   const {
     context: { cart },
   } = useContext(SiteContext)
@@ -82,7 +88,7 @@ function useCartCount() {
   return count
 }
 
-function useCartItems() {
+export function useCartItems() {
   const {
     context: { cart },
   } = useContext(SiteContext)
@@ -120,25 +126,26 @@ export async function getCart(setContext: any, existingCart: type.ContextCart | 
 export function useAddToCart() { 
 const { context, setContext } = useContext(SiteContext)
 
-
 async function addToCart(product:type.PageProduct, variant:type.ShopifyVariant, quantity = 1) { 
-  
   setContext((prevState:type.Context) => { 
     return  { 
       ...prevState,
-      isAdding: true
+      isAdding: true,
     }
   })
 
   if (!context.cart) return
-
   const newCart = await addToLocalCart(product, variant, quantity).catch(err => err.message)
-
-
     setCartState(newCart, setContext, context)
-
+    setTimeout(() => setContext((prevState:type.Context) => { 
+      return { 
+        ...prevState,
+        isCartOpen: false
+      }
+    }), 3000)
 
 }
+
 
 return addToCart
 }
@@ -158,4 +165,18 @@ export function useUpdateCart() {
   }
 
   return updateCart
+}
+
+export function useToggleCart() {
+  const {
+    context: { isCartOpen },
+    setContext,
+  } = useContext(SiteContext)
+
+  async function toggleCart() {
+    setContext((prevState:type.Context) => {
+      return { ...prevState, isCartOpen: !isCartOpen }
+    })
+  }
+  return toggleCart
 }

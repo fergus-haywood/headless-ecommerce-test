@@ -1,17 +1,15 @@
-import { useState, useContext } from 'react'
-import { SiteContext, useUpdateCart} from '../lib/siteContext'
+
+import { useSiteContext, SiteContext, useUpdateCart, useCartCount} from '../lib/siteContext'
 import CartProductItem from '../components/CartProductItem'
 import Link from 'next/link'
 
 
 
 export default function Cart() { 
-// @ts-ignore
-  const { context, setContext } = useContext(SiteContext)
 
-
-  const{ cart } = context
-  const checkoutUrl = context.cart.checkoutUrl
+  const { cart } = useSiteContext()
+  const { checkoutUrl } = cart
+  const itemCount = useCartCount()
 
 
 
@@ -20,6 +18,8 @@ export default function Cart() {
     <>
 
     <h1>  cart </h1>
+
+    <p>Cart Count: {itemCount}</p>
 
       {cart.lineItems.map((product:any) => (
 

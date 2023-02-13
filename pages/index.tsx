@@ -5,6 +5,7 @@ import { groq } from "next-sanity";
 import { getClient } from "../lib/sanity";
 import { getCollectionByHandle } from "../data/collections";
 import ProductCard from "../components/ProductCard";
+import CartSlider from "../components/ cart/CartSlider";
 
 const homepageQuery = groq`*[_type == "homepage"]{
   heroTitle
@@ -28,6 +29,7 @@ export default function HomePage(props: any) {
           {homepageData?.heroTitle}
         </h1>
       </div>
+      <CartSlider />
 
       <section className="container mx-auto py-12">
         <h2 className="font-semibold text-4xl mb-8">Featured Products</h2>

@@ -24,7 +24,6 @@ const res = await request(endpoint, query, variables , headers)
     lineItems: []
   }))
 
-  console.log('cart initialized')
   return { 
       ...res.cartCreate.cart,
       lineItems: []
@@ -106,8 +105,7 @@ export async function updateLocalCart(variantId: string, quantity: number) {
   if (cart.id) { 
     updateShopifyCart(variantId, cart.id, quantity)
   }
-  
-  console.log('local storage cart updated', cart)
+
   return cart
 }
 

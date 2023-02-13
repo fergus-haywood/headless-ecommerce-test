@@ -29,3 +29,30 @@ a {
     background: black;
   }
 }
+
+
+.cart-slider-container { 
+  position: fixed;
+  right: 0;
+  top: 0;
+  height: 100vw;
+  width: 30%;
+  transition: transform 300ms ease-in, visibility ease-in 300ms;
+  background-color: white;
+  border: 1px solid black;
+}
+
+.cart-slider-container {
+  transform: translateX(100%);
+  visibility: hidden;
+}
+
+.cart-slider-container.cart-slider-open {
+  transform: translateX(0);
+  visibility: visible;
+  transition: transform 300ms ease-in, v
+}
+
+.close { 
+  transition: visibility 0ms linear 300ms;
+}

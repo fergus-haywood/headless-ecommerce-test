@@ -6,6 +6,7 @@ import AddToCartButton from "../../components/AddToCartButton";
 import VariantSelector from "../../components/product/VariantSelector"
 import useSWR  from 'swr'
 import axios from "axios";
+import CartSlider from "../../components/ cart/CartSlider";
 
 // setup inventory fetcher
 
@@ -50,7 +51,8 @@ return (
     options.map((option:any) => (
       <VariantSelector key={option.name} variants={variants} setVariant={setSelectedVariant} option={option.name} />
     ))
-  )}
+  )} 
+  <CartSlider />
 
     <AddToCartButton product={product} variant={selectedVariant} available={available}/>
     < br/>

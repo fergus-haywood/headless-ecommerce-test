@@ -36,11 +36,12 @@ export async function addToShopifyCart(variantId: string, cartId: string, quanti
 
 
 const res = await request(endpoint, query, variables , headers).then((res) => { return res })
+
+console.log('product added to shopify cart')
 return res
 }
 
 export async function updateShopifyCart(variantId: string, cartId: string, quantity: number) { 
-
   const lineItemId = await getLineItemId(cartId, variantId)
   let res
 
@@ -76,7 +77,6 @@ export async function updateShopifyCart(variantId: string, cartId: string, quant
 res = await request(endpoint, query, variables, headers)
 
 } else { 
-
   const variables = { 
     cartId,
     lines: { 
@@ -84,8 +84,6 @@ res = await request(endpoint, query, variables, headers)
       quantity,
     }
   }
-  
-  
   
   const query = gql`
   mutation updateCartLines($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
@@ -109,13 +107,8 @@ res = await request(endpoint, query, variables, headers)
   }
 }
   `
-
  res = await request(endpoint, query, variables, headers)
-}
-
-
-console.log('shopify cart updated', res)
-
+ }
 }
 
 

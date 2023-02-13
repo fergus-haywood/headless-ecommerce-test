@@ -1,23 +1,26 @@
 
-import { useContext, useEffect , useState} from "react"
-import { SiteContext, useAddToCart } from "../lib/siteContext"
+import { useEffect , useState} from "react"
+import { useSiteContext, useAddToCart } from "../lib/siteContext"
 
 
 
 
 export default function AddToCartButton({ product, variant, available }:any) { 
 
-  const { context, setContext } = useContext(SiteContext)
+  const { isAdding} = useSiteContext()
+
+
   const addToCart = useAddToCart()
 
-  const [ adding, setAdding ] = useState(context.isAdding)
+  const [ adding, setAdding ] = useState(isAdding)
 
 
   useEffect(() => { 
 
-    setAdding(context.isAdding)
 
-  }, [context])
+    setAdding(isAdding)
+
+  }, [isAdding])
 
 
 
