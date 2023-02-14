@@ -72,10 +72,6 @@ window.localStorage.setItem('headless-shop-cart', JSON.stringify({
 }))
 
 //@ts-ignore
-//  const res = await addToShopifyCart(variantId, cart.id, quantity).then(() => { 
-//     return cart
-//   })
-//@ts-ignore
  return await addToShopifyCart(variantId, cart.id, quantity).then(() => { return cart } )
  }
 

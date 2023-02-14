@@ -14,6 +14,7 @@ export async function getLayoutSettings() {
     menu { 
       links[] {
           _type == 'collectionGroup' => {
+            title,
             collectionLinks[]-> {
               'title': store.title,
               'slug': store.slug.current,
