@@ -37,7 +37,6 @@ export async function addToShopifyCart(variantId: string, cartId: string, quanti
 
 const res = await request(endpoint, query, variables , headers).then((res) => { return res })
 
-console.log('product added to shopify cart')
 return res
 }
 
@@ -117,8 +116,6 @@ res = await request(endpoint, query, variables, headers)
 
 
 export async function getLineItemId(cartId: string, variantId: string) { 
-
-
   const variables = { 
     cartId
   }
@@ -142,12 +139,8 @@ export async function getLineItemId(cartId: string, variantId: string) {
   }
 }`
 
-
 const shopifyCart = await request(endpoint, query, variables , headers)
 
-
 const productLineItemId = shopifyCart.cart.lines.edges.find((item:any) => item.node.merchandise.id === variantId).node.id
-
-
 return productLineItemId
 }
