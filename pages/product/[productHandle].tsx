@@ -23,8 +23,18 @@ export default function ProductPage (props:any) {
   const variants = product.variants.edges
   const hasVariants = variants.length > 1
   const options = product.options
-  const [ selectedVariant, setSelectedVariant ] = useState(variants[0])
+  const [ selectedVariant, setSelectedVariant ] = useState(getAvailableVariant())
   const [ available, setAvailable ] = useState(true)
+
+  
+  function getAvailableVariant() { 
+    return variants.find((variant:any) => variant.node.availableForSale === true)
+  }
+  console.log(selectedVariant)
+  console.log(variants)
+
+
+  console.log('get available variant', getAvailableVariant())
 
   useEffect(() => { 
     if (data) { 
@@ -49,7 +59,7 @@ return (
 
   { hasVariants && (
     options.map((option:any) => (
-      <VariantSelector key={option.name} variants={variants} setVariant={setSelectedVariant} option={option.name} />
+      <VariantSelector key={option.name} variants={variants} initVariable={selectedVariant} setVariant={setSelectedVariant} option={option.name} />
     ))
   )} 
   <CartSlider />

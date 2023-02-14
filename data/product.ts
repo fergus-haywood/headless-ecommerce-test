@@ -57,6 +57,7 @@ export async function getProductByHandle(productHandle:string) {
           node {
             id
             title
+            availableForSale
             selectedOptions{
 						name	
             }
