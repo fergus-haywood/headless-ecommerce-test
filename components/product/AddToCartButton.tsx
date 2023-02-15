@@ -1,6 +1,6 @@
 
 import { useEffect , useState} from "react"
-import { useSiteContext, useAddToCart } from "../lib/siteContext"
+import { useSiteContext, useAddToCart } from "../../lib/siteContext"
 
 
 

@@ -2,12 +2,11 @@ import { getAllCollections, getCollectionByHandle } from "../../data/collections
 import Image from "next/image"
 import styles from '../../styles/pages/Collection.module.css'
 
-import ProductCard from "../../components/ProductCard"
+import ProductCard from "../../components/product/ProductCard"
 
 export default function Collection(props:any) { 
 
 const collection = props.data.collection
-
 const collectionProducts = collection.products.edges
 
 

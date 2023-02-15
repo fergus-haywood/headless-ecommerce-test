@@ -4,7 +4,7 @@ import Link from "next/link";
 import { groq } from "next-sanity";
 import { getClient } from "../lib/sanity";
 import { getCollectionByHandle } from "../data/collections";
-import ProductCard from "../components/ProductCard";
+import ProductCard from "../components/product/ProductCard";
 import CartSlider from "../components/ cart/CartSlider";
 
 const homepageQuery = groq`*[_type == "homepage"]{

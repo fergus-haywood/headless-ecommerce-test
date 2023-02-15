@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react"
+import { getVariantByOptions } from "../../data/product"
+import { useRouter } from "next/router"
 
 
 export default function VariantSelector({variants, initVariable ,setVariant, option}:any) { 
 
-
   const [ selectedVariant, setSelectedVariant ] = useState(initVariable.node.id)
+  
+
+  const router = useRouter()
+  const handle = router.query.productHandle
 
   function handleClick(e:any) { 
 
@@ -18,6 +23,9 @@ export default function VariantSelector({variants, initVariable ,setVariant, opt
   useEffect(() => {
     setVariant(variants.find((variant:any) => variant.node.id === selectedVariant))
   }, [selectedVariant])
+
+
+
 
 return ( 
   <>

@@ -50,16 +50,18 @@ export async function getProductByHandle(productHandle:string) {
       }
       options{
         name
+        values
       }
       variants(first: 10) {
         edges {
           cursor
           node {
+            availableForSale
             id
             title
-            availableForSale
             selectedOptions{
 						name	
+            value
             }
             image {
 							altText
@@ -110,3 +112,47 @@ export async function getProductByHandle(productHandle:string) {
 const res = await request(endpoint, query, variables, headers)
 return res.product
 }
+
+//@ts-ignore
+export async function getVariantByOptions(handle, options) { 
+
+
+const optionArr = Object.entries(options)
+
+
+const selectedOptions = optionArr.map((option:any) => { 
+    return {
+      name: option[0], 
+      value: option[1]
+    }
+  })
+
+
+console.log('in function', handle, selectedOptions)
+
+
+
+const variables:any = {
+  handle,
+  selectedOptions,
+}
+
+
+
+const query = gql`
+   query getProductBySelectedOptions($handle: String!, $selectedOptions: [SelectedOptionInput!]!) {
+    product(handle: $handle) {
+      variantBySelectedOptions(selectedOptions: $selectedOptions) {
+        id
+      }
+    }
+  }`
+
+const res = await request(endpoint, query, variables , headers)
+return res.product.variantBySelectedOptions.id
+
+
+
+}
+
+

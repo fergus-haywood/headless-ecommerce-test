@@ -2,11 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from 'react'
 import { getAllProducts, getProductByHandle } from "../../data/product";
-import AddToCartButton from "../../components/AddToCartButton";
+import AddToCartButton from "../../components/product/AddToCartButton";
 import VariantSelector from "../../components/product/VariantSelector"
+import OptionVariantSelector from "../../components/product/OptionVariantSelector";
 import useSWR  from 'swr'
 import axios from "axios";
-import CartSlider from "../../components/ cart/CartSlider";
 
 // setup inventory fetcher
 
@@ -23,18 +23,14 @@ export default function ProductPage (props:any) {
   const variants = product.variants.edges
   const hasVariants = variants.length > 1
   const options = product.options
+  const hasMultipleOptions = options.length > 1
   const [ selectedVariant, setSelectedVariant ] = useState(getAvailableVariant())
   const [ available, setAvailable ] = useState(true)
 
   
   function getAvailableVariant() { 
-    return variants.find((variant:any) => variant.node.availableForSale === true)
+    return variants.find((variant:any) => variant?.node?.availableForSale === true)
   }
-  console.log(selectedVariant)
-  console.log(variants)
-
-
-  console.log('get available variant', getAvailableVariant())
 
   useEffect(() => { 
     if (data) { 
@@ -44,8 +40,13 @@ export default function ProductPage (props:any) {
       } else { 
         setAvailable(false)
       }
+
+      console.log(selectedVariant)
     }
   },[data, selectedVariant])
+
+
+
 
 
 return ( 
@@ -57,12 +58,16 @@ return (
   <p>testing the api call {available}</p>
   <Image src={product.media.edges[0].node.image.url} alt={product.media.edges[0].node.alt} width={200} height={200} />
 
-  { hasVariants && (
-    options.map((option:any) => (
-      <VariantSelector key={option.name} variants={variants} initVariable={selectedVariant} setVariant={setSelectedVariant} option={option.name} />
-    ))
-  )} 
-  <CartSlider />
+   {(hasVariants && !hasMultipleOptions) &&
+      <VariantSelector key={options[0].name} variants={variants} initVariable={selectedVariant} setVariant={setSelectedVariant} option={options[0].name} />
+
+} 
+      {(hasMultipleOptions) &&
+        <OptionVariantSelector product={product} setVariable={setSelectedVariant} variants={variants}/>
+      
+
+}
+  
 
     <AddToCartButton product={product} variant={selectedVariant} available={available}/>
     < br/>

@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import styles from '../styles/components/ProductCard.module.css'
+import styles from '../../styles/components/product/ProductCard.module.css'
 import Link from 'next/link'
 
 
