@@ -40,8 +40,6 @@ export default function ProductPage (props:any) {
       } else { 
         setAvailable(false)
       }
-
-      console.log(selectedVariant)
     }
   },[data, selectedVariant])
 

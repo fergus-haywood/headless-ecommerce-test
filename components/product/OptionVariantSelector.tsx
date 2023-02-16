@@ -10,23 +10,14 @@ const router = useRouter()
 const handle = router.query.productHandle
 const options = product.options
 
-  const firstAvailable = variants.find((variant:any) => variant.node.availableForSale === true)
-  const initialValue:any = {
-}
+const firstAvailable = variants.find((variant:any) => variant.node.availableForSale === true)
+const initialValue:any = {}
 
 firstAvailable.node.selectedOptions.forEach((option:any) => {
     initialValue[option.name] = option.value 
   }) 
 
-
 const [ selectedVariants, setSelectedVariants ]:any = useState(initialValue)
-
-  console.log('selectedVariant', selectedVariants)
-
-
-
-
-
 
 async function handleClick(option:any, e:any) { 
  setSelectedVariants((prev:any) => { 
@@ -48,8 +39,6 @@ useEffect(() => {
   return ( 
     <>
 <p>option</p>
-
-
     {options.map((option:any) => (
       <React.Fragment key={option.name}>
       <p>{option.name}</p>
@@ -63,8 +52,6 @@ useEffect(() => {
       ))}
       </React.Fragment> 
     ))}
-    
-    
     </>
     )
 }

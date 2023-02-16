@@ -115,11 +115,8 @@ return res.product
 
 //@ts-ignore
 export async function getVariantByOptions(handle, options) { 
-
-
+  
 const optionArr = Object.entries(options)
-
-
 const selectedOptions = optionArr.map((option:any) => { 
     return {
       name: option[0], 
@@ -127,17 +124,10 @@ const selectedOptions = optionArr.map((option:any) => {
     }
   })
 
-
-console.log('in function', handle, selectedOptions)
-
-
-
 const variables:any = {
   handle,
   selectedOptions,
 }
-
-
 
 const query = gql`
    query getProductBySelectedOptions($handle: String!, $selectedOptions: [SelectedOptionInput!]!) {

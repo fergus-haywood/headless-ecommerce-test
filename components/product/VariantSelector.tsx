@@ -7,19 +7,10 @@ export default function VariantSelector({variants, initVariable ,setVariant, opt
 
   const [ selectedVariant, setSelectedVariant ] = useState(initVariable.node.id)
   
-
-  const router = useRouter()
-  const handle = router.query.productHandle
-
   function handleClick(e:any) { 
-
     setSelectedVariant(e.target.value)
-
     setVariant(variants.find((variant:any) => variant.node.id === selectedVariant))
   }
-
-
-
   useEffect(() => {
     setVariant(variants.find((variant:any) => variant.node.id === selectedVariant))
   }, [selectedVariant])
