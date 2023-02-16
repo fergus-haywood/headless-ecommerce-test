@@ -56,3 +56,8 @@ a {
 .close { 
   transition: visibility 0ms linear 300ms;
 }
+
+
+.sold-out { 
+  opacity: 0.3;
+}

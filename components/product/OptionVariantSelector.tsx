@@ -28,6 +28,12 @@ async function handleClick(option:any, e:any) {
  })
 }
 
+
+console.log(variants[0])
+// variants.forEach((variant) => variant.node)
+
+
+
 useEffect(() => { 
   async function variable() { 
     const seletectedVariableId = await getVariantByOptions(handle, selectedVariants)
@@ -45,7 +51,8 @@ useEffect(() => {
 
       {option.values.map((value:any) => ( 
         <React.Fragment key ={ value}>
-        <label>{value}
+        <label>
+          {value}
           <input type="radio" value={value} name={option.name} onClick={(e) => handleClick(option.name, e)} checked={ selectedVariants[option.name] == value}/>
         </label>
       </React.Fragment>

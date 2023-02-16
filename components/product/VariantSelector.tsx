@@ -16,7 +16,7 @@ export default function VariantSelector({variants, initVariable ,setVariant, opt
   }, [selectedVariant])
 
 
-
+console.log(variants[0])
 
 return ( 
   <>
@@ -25,7 +25,8 @@ return (
   <legend>{option}</legend>
 {variants.map((variant: any) => ( 
   <React.Fragment key ={ variant.node.id}>
-  <label key={variant.node.id}>{variant.node.title}
+  <label key={variant.node.id} className={`${!variant.node.availableForSale? 'sold-out' : ''}`}>
+    {variant.node.title} 
   <input key={variant.node.id} type="radio" value={variant.node.id} name={option} onClick={(e) => handleClick(e)} checked={variant.node.id === selectedVariant} />
   </label>
 

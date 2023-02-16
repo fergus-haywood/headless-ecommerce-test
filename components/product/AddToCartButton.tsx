@@ -22,6 +22,8 @@ export default function AddToCartButton({ product, variant, available }:any) {
 
   }, [isAdding])
 
+  console.log('varaint from add to cart', variant)
+
 
 
 
@@ -29,18 +31,15 @@ export default function AddToCartButton({ product, variant, available }:any) {
   return ( 
 
 <>
-
+<br/>
+      <button onClick={() => addToCart(product, variant)} disabled={!variant.node.availableForSale}>
 { available ? 
-      <button onClick={() => addToCart(product, variant)} >
-    {adding ? 'Adding...' : 'Add to Cart'}
-    
+    adding ? 'Adding...' : 'Add to Cart'
+    :
+    'Sold Out'
+}    
 </button> 
-:
 
-      <button> 
-      Sold Out
-      </button>
-}
     
 </>
     
