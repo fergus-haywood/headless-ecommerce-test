@@ -64,7 +64,9 @@ a {
 
 .hero-image-container { 
   position: relative;
-  height: 1400px;
+  height: 40vw;
+  min-height: 260px;
+  max-height: 1400px;
   overflow: hidden;
 }
 

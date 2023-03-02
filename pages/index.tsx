@@ -16,7 +16,6 @@ export default function HomePage(props: any) {
 
   const { homepageData, collection } = props.data;
 
-  console.log(homepageData)
   
   const products = collection.products.edges
 
@@ -31,11 +30,9 @@ export default function HomePage(props: any) {
       {homepageData.hero && 
       <section className = "homepage-hero">
       {homepageData.hero.content.map((content:any) => (
-        <>
-        <div className='hero-image-container'>
+        <div key={content._key} className='hero-image-container'>
         <Image fill src={urlFor(content.image).quality(100).url()} alt="homepage-image" />
         </div>
-        </>
       ))}
       </section>
       }

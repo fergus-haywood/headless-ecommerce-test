@@ -139,7 +139,7 @@ export async function getLineItemId(cartId: string, variantId: string) {
   }
 }`
 
-const shopifyCart = await request(endpoint, query, variables , headers).then(res => console.log('the res', res))
+const shopifyCart = await request(endpoint, query, variables , headers)
 
 const productLineItemId = await shopifyCart?.cart.lines.edges.find((item:any) => item.node.merchandise.id === variantId).node.id
 return productLineItemId
