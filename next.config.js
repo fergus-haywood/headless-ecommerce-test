@@ -10,7 +10,7 @@ const nextConfig = {
 
 const imagesConfig = {
   images: {
-    domains: ['images.pexels.com', 'cdn.shopify.com'],
+    domains: ['images.pexels.com', 'cdn.shopify.com', 'cdn.sanity.io'],
   },
 }
 

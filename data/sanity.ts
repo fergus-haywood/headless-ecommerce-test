@@ -1,4 +1,5 @@
 import { sanityClient } from "../lib/sanity";
+import imageUrlBuilder from "@sanity/image-url"
 
 
 
@@ -34,8 +35,13 @@ export async function getLayoutSettings() {
   footer 
         }`
           
-            
-
   const data = await sanityClient.fetch(query)
   return data
 }
+
+
+export function urlFor(source:any) {
+  return imgBuilder.image(source)
+}
+
+const imgBuilder = imageUrlBuilder(sanityClient)

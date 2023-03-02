@@ -61,3 +61,14 @@ a {
 .sold-out { 
   opacity: 0.3;
 }
+
+.hero-image-container { 
+  position: relative;
+  height: 1400px;
+  overflow: hidden;
+}
+
+.hero-image-container img {
+  object-fit: contain;
+
+}
