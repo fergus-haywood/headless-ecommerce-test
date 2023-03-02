@@ -16,8 +16,6 @@ export default function VariantSelector({variants, initVariable ,setVariant, opt
   }, [selectedVariant])
 
 
-console.log(variants[0])
-
 return ( 
   <>
 <p>Variant Selector</p>

@@ -9,9 +9,6 @@ const data = await getLayoutSettings()
 export default function Layout({ children }:any) { 
 
 
-  console.log(data)
-
-
 return ( 
   <>
   <Header menu={data.menu} />

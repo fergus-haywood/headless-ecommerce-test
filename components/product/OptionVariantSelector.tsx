@@ -28,12 +28,6 @@ async function handleClick(option:any, e:any) {
  })
 }
 
-
-console.log(variants[0])
-// variants.forEach((variant) => variant.node)
-
-
-
 useEffect(() => { 
   async function variable() { 
     const seletectedVariableId = await getVariantByOptions(handle, selectedVariants)

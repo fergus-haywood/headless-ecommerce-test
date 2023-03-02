@@ -18,9 +18,6 @@ const homepageQuery = groq`*[_type == "homepage"]{
 
 export default function HomePage(props: any) {
   const { homepageData, collection } = props.data;
-
-  console.log(props)
-
   
   const products = collection.products.edges
 

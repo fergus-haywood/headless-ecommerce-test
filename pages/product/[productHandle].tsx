@@ -44,29 +44,20 @@ export default function ProductPage (props:any) {
   },[data, selectedVariant])
 
 
-
-
-
 return ( 
   <>
   <h1> 
-    {product.title} testing
+    {product.title}
   </h1>
 
-  <p>testing the api call {available}</p>
   <Image src={product.media.edges[0].node.image.url} alt={product.media.edges[0].node.alt} width={200} height={200} />
 
    {(hasVariants && !hasMultipleOptions) &&
       <VariantSelector key={options[0].name} variants={variants} initVariable={selectedVariant} setVariant={setSelectedVariant} option={options[0].name} />
-
-} 
-      {(hasMultipleOptions) &&
+  }  
+    {(hasMultipleOptions) &&
         <OptionVariantSelector product={product} setVariable={setSelectedVariant} variants={variants}/>
-      
-
 }
-  
-
     <AddToCartButton product={product} variant={selectedVariant} available={available}/>
     < br/>
     <Link href='/cart'>
@@ -76,8 +67,6 @@ return (
 
 )
 }
-
-
 
 export async function getStaticPaths() {
 const { products } = await getAllProducts()

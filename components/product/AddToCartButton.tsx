@@ -22,11 +22,6 @@ export default function AddToCartButton({ product, variant, available }:any) {
 
   }, [isAdding])
 
-  console.log('varaint from add to cart', variant)
-
-
-
-
 
   return ( 
 
